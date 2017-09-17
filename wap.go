@@ -6,7 +6,25 @@ import (
 	"net/url"
 )
 
-// TradeWapPay https://doc.open.alipay.com/docs/api.htm?spm=a219a.7395905.0.0.stK0ff&docType=4&apiId=1046
+type PayRequest struct {
+	URL string
+	Method string
+	Headers map[string]string
+	Body string
+}
+
+func (this *AliPay) TradeWapPayRequest(param AliPayTradeWapPay) *PayRequest {
+	req := &PayRequest{
+		URL: this.apiDomain,
+		Method: "POST",
+		Headers: map[string]string{
+			"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+		},
+		Body: this.URLValues(param).Encode(),
+	}
+	return req
+}
+
 func (this *AliPay) TradeWapPay(param AliPayTradeWapPay) (url *url.URL, err error) {
 	var buf = strings.NewReader(this.URLValues(param).Encode())
 
