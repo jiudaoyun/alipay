@@ -8,19 +8,13 @@ import (
 
 type PayRequest struct {
 	URL string
-	Method string
-	Headers map[string]string
-	Body string
+	Form map[string][]string
 }
 
 func (this *AliPay) TradeWapPayRequest(param AliPayTradeWapPay) *PayRequest {
 	req := &PayRequest{
 		URL: this.apiDomain,
-		Method: "POST",
-		Headers: map[string]string{
-			"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-		},
-		Body: this.URLValues(param).Encode(),
+		Form: this.URLValues(param),
 	}
 	return req
 }
