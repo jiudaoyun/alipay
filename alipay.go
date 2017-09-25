@@ -195,16 +195,16 @@ func sign_rsa(keys []string, param url.Values, privateKey []byte) (s string) {
 	return s
 }
 
-func verify_sign(req *http.Request, key []byte) (ok bool, err error) {
-	sign, err := base64.StdEncoding.DecodeString(req.PostForm.Get("sign"))
-	signType := req.PostForm.Get("sign_type")
+func VerifySign(form url.Values, key []byte) error {
+	sign, err := base64.StdEncoding.DecodeString(form.Get("sign"))
+	signType := form.Get("sign_type")
 	if err != nil {
-		return false, err
+		return err
 	}
 	fmt.Println(signType)
 
 	var keys = make([]string, 0, 0)
-	for key, value := range req.PostForm {
+	for key, value := range form {
 		if key == "sign" || key == "sign_type" {
 			continue
 		}
@@ -217,7 +217,7 @@ func verify_sign(req *http.Request, key []byte) (ok bool, err error) {
 
 	var pList = make([]string, 0, 0)
 	for _, key := range keys {
-		var value = strings.TrimSpace(req.PostForm.Get(key))
+		var value = strings.TrimSpace(form.Get(key))
 		if len(value) > 0 {
 			pList = append(pList, key+"="+value)
 		}
@@ -230,11 +230,10 @@ func verify_sign(req *http.Request, key []byte) (ok bool, err error) {
 		err = encoding.VerifyPKCS1v15([]byte(s), sign, key, crypto.SHA256)
 	}
 	if err != nil {
-		return false, err
+		return err
 	}
-	return true, nil
+	return nil
 }
-
 
 func verify_response_data(data []byte, signType, sign string, key []byte) (ok bool, err error) {
 	signBytes, err := base64.StdEncoding.DecodeString(sign)

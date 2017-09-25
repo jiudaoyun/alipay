@@ -47,9 +47,6 @@ func (this *AliPay) GetTradeNotification(req *http.Request) (*TradeNotification,
 
 
 func GetTradeNotification(req *http.Request, aliPayPublicKey []byte) (noti *TradeNotification, err error) {
-	if req == nil {
-		return nil, errors.New("request 参数不能为空")
-	}
 	req.ParseForm()
 
 	noti = &TradeNotification{}
@@ -87,12 +84,13 @@ func GetTradeNotification(req *http.Request, aliPayPublicKey []byte) (noti *Trad
 	noti.VoucherDetailList = req.PostFormValue("voucher_detail_list")
 
 	if len(noti.NotifyId) == 0 {
-		return nil, errors.New("不是有效的 Notify")
+		return nil, errors.New("invalid notification")
 	}
 
-	ok, err := verify_sign(req, aliPayPublicKey)
-	if ok {
-		return noti, nil
+	err = VerifySign(req.PostForm, aliPayPublicKey)
+	if err != nil {
+		return nil, err
 	}
-	return nil, err
+
+	return noti, nil
 }
