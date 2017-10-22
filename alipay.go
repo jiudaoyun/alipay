@@ -65,7 +65,7 @@ func (this *AliPay) URLValues(param AliPayParam) url.Values {
 	}
 
 	var keys = make([]string, 0, 0)
-	for key, _ := range p {
+	for key := range p {
 		keys = append(keys, key)
 	}
 

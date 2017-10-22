@@ -29,3 +29,20 @@ const (
 	K_SIGN_TYPE_RSA2 = "RSA2"
 	K_SIGN_TYPE_RSA  = "RSA"
 )
+
+const (
+	CodeSuccess = "10000"
+	CodeServiceUnavailable = "20000"
+	CodeUnauthorized = "20001"
+	CodeMissingArgs = "40001"
+	CodeInvalidArgs = "40002"
+	CodeBizFailed = "40004"
+	CodeInsufficientPermissions = "40006"
+)
+
+const (
+	ACQ_SYSTEM_ERROR = "ACQ.SYSTEM_ERROR"
+	ACQ_TRADE_NOT_EXIST = "ACQ.TRADE_NOT_EXIST"
+	ACQ_TRADE_STATUS_ERROR = "ACQ.TRADE_STATUS_ERROR"
+	ACQ_INVALID_PARAMETER = "ACQ.INVALID_PARAMETER"
+)
